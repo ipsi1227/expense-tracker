@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Expense Tracker Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .menu {
+            padding: 30px;
+        }
+
+        .menu-title {
+            text-align: center;
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .menu-buttons {
+            display: grid;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .menu-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .content-section {
+            padding: 30px;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .expense-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .expense-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.3s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .expense-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .expense-category {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .expense-amount {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .stats-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stats-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .stats-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            margin-top: 20px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+            animation: fadeIn 0.3s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Expense Tracker Pro</h1>
+            <p>Track your spending like a boss!</p>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu">
+            <div class="menu-title">** MENU **</div>
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="showSection('addExpense')">
+                    ➕ Add Expense
+                </button>
+                <button class="menu-btn" onclick="showSection('viewExpenses')">
+                    📋 View All Expenses
+                </button>
+                <button class="menu-btn" onclick="showSection('totalExpense')">
+                    💵 Show Total Spent
+                </button>
+                <button class="menu-btn" onclick="showSection('highestExpense')">
+                    🔝 Highest Expense
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Expense Section -->
+        <div id="addExpense" class="content-section">
+            <h2 style="color: #667eea; margin-bottom: 20px;">➕ Add New Expense</h2>
+            <div id="successMessage"></div>
+            <form id="expenseForm" onsubmit="addExpense(event)">
+                <div class="form-group">
+                    <label for="category">📁 Category</label>
+                    <input type="text" id="category" placeholder="e.g., Food, Transport, Entertainment" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">💰 Amount</label>
+                    <input type="number" id="amount" step="0.01" placeholder="e.g., 50.00" required>
+                </div>
+                <button type="submit" class="btn">Add Expense</button>
+                <button type="button" class="btn btn-secondary" onclick="showMenu()">Back to Menu</button>
+            </form>
+        </div>
+
+        <!-- View Expenses Section -->
+        <div id="viewExpenses" class="content-section">
+            <h2 style="color: #667eea; margin-bottom: 20px;">📋 Your Expenses</h2>
+            <div id="expensesList"></div>
+            <button class="btn back-btn" onclick="showMenu()">Back to Menu</button>
+        </div>
+
+        <!-- Total Expense Section -->
+        <div id="totalExpense" class="content-section">
+            <h2 style="color: #667eea; margin-bottom: 20px;">💵 Total Amount Spent</h2>
+            <div class="stats-box">
+                <div class="stats-label">Total Expenses</div>
+                <div class="stats-value" id="totalAmount">$0.00</div>
+            </div>
+            <button class="btn back-btn" onclick="showMenu()">Back to Menu</button>
+        </div>
+
+        <!-- Highest Expense Section -->
+        <div id="highestExpense" class="content-section">
+            <h2 style="color: #667eea; margin-bottom: 20px;">🔝 Highest Expense</h2>
+            <div id="highestExpenseContent"></div>
+            <button class="btn back-btn" onclick="showMenu()">Back to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // Expense dictionary (object in JavaScript)
+        let expenses = {};
+
+        // Show specific section
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update content when showing certain sections
+            if (sectionId === 'viewExpenses') {
+                displayExpenses();
+            } else if (sectionId === 'totalExpense') {
+                displayTotal();
+            } else if (sectionId === 'highestExpense') {
+                displayHighest();
+            }
+        }
+
+        // Show main menu
+        function showMenu() {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('mainMenu').style.display = 'block';
+            
+            // Clear form
+            document.getElementById('expenseForm').reset();
+            document.getElementById('successMessage').innerHTML = '';
+        }
+
+        // Add expense
+        function addExpense(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('category').value.trim();
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (category && amount > 0) {
+                // Add or update expense
+                if (expenses[category]) {
+                    expenses[category] += amount;
+                } else {
+                    expenses[category] = amount;
+                }
+
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.innerHTML = `<div class="success-message">✅ Added $${amount.toFixed(2)} to ${category}!</div>`;
+
+                // Clear form
+                document.getElementById('expenseForm').reset();
+                document.getElementById('category').focus();
+
+                // Auto-hide success message after 3 seconds
+                setTimeout(() => {
+                    successMsg.innerHTML = '';
+                }, 3000);
+            }
+        }
+
+        // Display all expenses
+        function displayExpenses() {
+            const expensesList = document.getElementById('expensesList');
+            
+            if (Object.keys(expenses).length === 0) {
+                expensesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No expenses yet!</h3>
+                        <p>Start tracking by adding your first expense.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<ul class="expense-list">';
+            for (let category in expenses) {
+                html += `
+                    <li class="expense-item">
+                        <span class="expense-category">${category}</span>
+                        <span class="expense-amount">$${expenses[category].toFixed(2)}</span>
+                    </li>
+                `;
+            }
+            html += '</ul>';
+            expensesList.innerHTML = html;
+        }
+
+        // Display total expense
+        function displayTotal() {
+            let total = 0;
+            for (let category in expenses) {
+                total += expenses[category];
+            }
+            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Display highest expense
+        function displayHighest() {
+            const content = document.getElementById('highestExpenseContent');
+            
+            if (Object.keys(expenses).length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h3>No expenses yet!</h3>
+                        <p>Add some expenses to see your highest spending.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let highestCategory = '';
+            let highestAmount = 0;
+
+            for (let category in expenses) {
+                if (expenses[category] > highestAmount) {
+                    highestAmount = expenses[category];
+                    highestCategory = category;
+                }
+            }
+
+            content.innerHTML = `
+                <div class="stats-box">
+                    <div class="stats-label">Highest Expense Category</div>
+                    <div class="stats-value" style="font-size: 2em; margin: 10px 0;">${highestCategory}</div>
+                    <div class="stats-value">$${highestAmount.toFixed(2)}</div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
